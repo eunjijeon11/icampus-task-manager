@@ -1,14 +1,29 @@
-import "./App.css";
-import { ChakraProvider, Button, ButtonGroup } from "@chakra-ui/react";
+import "./styles/App.css";
+import { NewMain } from "./pages/Authentication";
+import { Main } from "./pages/MainPage";
+import { ChakraProvider } from "@chakra-ui/react";
+import { useState } from "react";
 
 function App() {
-    return (
-        <ChakraProvider>
-            <div className="App">
-                <Button colorScheme="green">Button</Button>
-            </div>
-        </ChakraProvider>
+  const [mode, setMode] = useState("new");
+  let content = null;
+  if (mode === "new") {
+    content = (
+      <NewMain
+        onChangeMode={() => {
+          // Authentication with canvas
+          setMode("old");
+        }}
+      ></NewMain>
     );
+  } else {
+    content = <Main></Main>;
+  }
+  return (
+    <ChakraProvider>
+      <div className="App">{content}</div>
+    </ChakraProvider>
+  );
 }
 
 export default App;
