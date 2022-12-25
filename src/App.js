@@ -3,6 +3,8 @@ import { NewMain } from "./pages/Authentication";
 import { Main } from "./pages/MainPage";
 import { ChakraProvider } from "@chakra-ui/react";
 import { useState } from "react";
+import Fonts from "./fonts";
+import theme from "./theme";
 
 function App() {
   const [mode, setMode] = useState("new");
@@ -20,7 +22,8 @@ function App() {
     content = <Main></Main>;
   }
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
+      <Fonts />
       <div className="App">{content}</div>
     </ChakraProvider>
   );

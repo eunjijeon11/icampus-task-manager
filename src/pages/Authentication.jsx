@@ -4,10 +4,13 @@ import "../styles/Authentication.css";
 export function NewMain(props) {
   return (
     <Flex flexDirection="column" align="center" justify="center" height="100%">
-      <Heading className="title">I-Campus Task Manager</Heading>
+      <Heading className="title" color="brand.300" size="3xl">
+        아캠정복자
+      </Heading>
       <Button
         id="AuthenticationBtn"
-        colorScheme="green"
+        bg="brand.200"
+        color="white"
         onClick={() => {
           props.onChangeMode();
         }}
