@@ -9,14 +9,14 @@ import {
 import { Header } from "./Header";
 import HistoryView from "./History";
 import SubjectView from "./Subjects";
-import WeeklyView from "./Monthly";
+import MonthlyView from "./Monthly";
 
 export function Main() {
   return (
     <Flex className="Main" direction="column" height="100%">
-      <Header></Header>
-      <Flex justify="center" flex="1" px="5vh" pb="3vh">
-        <Tabs flex="1" variant="soft-rounded" colorScheme="orange">
+      <Header h="60"></Header>
+      <div justify="center" px="5vh" pb="3vh">
+        <Tabs variant="soft-rounded" colorScheme="orange">
           <TabList height="7%" display="flex" justifyContent="center">
             <Tab className="tab" mr="15px" shadow="lg">
               달력
@@ -30,7 +30,7 @@ export function Main() {
           </TabList>
           <TabPanels height="93%">
             <TabPanel height="100%">
-              <WeeklyView />
+              <MonthlyView />
             </TabPanel>
             <TabPanel height="100%">
               <SubjectView />
@@ -40,7 +40,7 @@ export function Main() {
             </TabPanel>
           </TabPanels>
         </Tabs>
-      </Flex>
+      </div>
     </Flex>
   );
 }
