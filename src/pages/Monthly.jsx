@@ -43,7 +43,7 @@ function calendarItem(key, date, tasks, color) {
   lis = showTask(lis, tasks.etc, MdTaskAlt, "task.etc");
   return (
     <GridItem
-      h="100"
+      h="100px"
       borderWidth={"1px"}
       key={key}
       color={color}
@@ -63,33 +63,11 @@ function calendarItem(key, date, tasks, color) {
 }
 
 function showMonth(year, month) {
-  var first = new Date(year, month);
-  var startDay = first.getDay();
-  var before = new Date(year, month, 0);
-  var endDay = new Date(year, month + 1, 0);
-
   var lis = [];
-  for (let i = startDay - 2; i >= 0; i--) {
+  for (let i = 0; i < 15 * 7; i++) {
     lis.push(
       calendarItem(
         (month - 1).toString() + i.toString(),
-        before.getDate() - i,
-        {
-          lesson: 5,
-          task: 4,
-          meet: 3,
-          work: 2,
-          etc: 1,
-        },
-        "gray.400"
-      )
-    );
-  }
-
-  for (let i = 1; i <= endDay.getDate(); i++) {
-    lis.push(
-      calendarItem(
-        month.toString() + i.toString(),
         i,
         {
           lesson: 5,
@@ -103,34 +81,17 @@ function showMonth(year, month) {
     );
   }
 
-  for (let i = 1; i <= 7 - endDay.getDay(); i++) {
-    lis.push(
-      calendarItem(
-        month.toString() + i.toString(),
-        i,
-        {
-          lesson: 5,
-          task: 4,
-          meet: 3,
-          work: 2,
-          etc: 1,
-        },
-        "gray.400"
-      )
-    );
-  }
-
   return lis;
 }
 
 export default function MonthlyView() {
   const [date, setDate] = useState(new Date());
-  var lis = showMonth(2023, 0); // Jan: 0
+  var lis = showMonth(date.getFullYear(), date.getDate()); // Jan: 0
 
   return (
     <Card height="100%" mx="4vw" shadow="2xl" overflow="hidden">
       <CardBody>
-        <Stack display="flex">
+        <Stack display="flex" height="100%">
           <Grid templateColumns="repeat(7, 1fr)" ml="50px">
             <GridItem className="week">월</GridItem>
             <GridItem className="week">화</GridItem>
@@ -140,24 +101,33 @@ export default function MonthlyView() {
             <GridItem className="week">토</GridItem>
             <GridItem className="week">일</GridItem>
           </Grid>
-          <Stack flex="1" direction="row">
-            <Grid templateRows="repeat(5, 1fr)" w="50px">
-              <GridItem className="schoolWeek">1주차</GridItem>
-              <GridItem className="schoolWeek">2주차</GridItem>
-              <GridItem className="schoolWeek">3주차</GridItem>
-              <GridItem className="schoolWeek">4주차</GridItem>
-              <GridItem className="schoolWeek">5주차</GridItem>
-            </Grid>
-            <Stack
-              width="100%"
-              height="500"
-              overflow="hidden"
-              scrollBehavior="outside"
-            >
+          <Stack
+            id="monthlyScroll"
+            height="500px"
+            overflowY="scroll"
+            scrollBehavior="inherit"
+          >
+            <Stack direction="row" display="flex">
+              <Grid templateRows="repeat(15, 1fr)" w="50px">
+                <GridItem className="schoolWeek">1주차</GridItem>
+                <GridItem className="schoolWeek">2주차</GridItem>
+                <GridItem className="schoolWeek">3주차</GridItem>
+                <GridItem className="schoolWeek">4주차</GridItem>
+                <GridItem className="schoolWeek">5주차</GridItem>
+                <GridItem className="schoolWeek">6주차</GridItem>
+                <GridItem className="schoolWeek">7주차</GridItem>
+                <GridItem className="schoolWeek">8주차</GridItem>
+                <GridItem className="schoolWeek">9주차</GridItem>
+                <GridItem className="schoolWeek">10주차</GridItem>
+                <GridItem className="schoolWeek">11주차</GridItem>
+                <GridItem className="schoolWeek">12주차</GridItem>
+                <GridItem className="schoolWeek">13주차</GridItem>
+                <GridItem className="schoolWeek">14주차</GridItem>
+                <GridItem className="schoolWeek">15주차</GridItem>
+              </Grid>
               <Grid
-                width="100%"
                 templateColumns="repeat(7, 1fr)"
-                templateRows="repeat(5, 1fr)"
+                templateRows="repeat(15, 1fr)"
                 flex="1"
               >
                 {lis}
