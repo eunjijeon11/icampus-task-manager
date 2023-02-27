@@ -6,8 +6,8 @@ import {
   Icon,
   Stack,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import {
   MdVideoLibrary,
   MdOutlineFavorite,
@@ -16,8 +16,11 @@ import {
   MdCreate,
 } from "react-icons/md";
 import "../styles/Monthly.css";
+import ShowModal from "./TaskModal";
+import { useState, useEffect } from "react";
+import * as config from "../config";
 
-function showTask(lis, num, icon, color) {
+function showTask(key, lis, num, icon, color) {
   if (num) {
     lis.push(
       <GridItem
@@ -25,6 +28,7 @@ function showTask(lis, num, icon, color) {
         direction="row"
         alignItems="center"
         color={color}
+        key={key}
       >
         <Icon as={icon} />
         <Text px="10px">{num}</Text>
@@ -34,41 +38,61 @@ function showTask(lis, num, icon, color) {
   return lis;
 }
 
-function calendarItem(key, date, tasks, color) {
+function CalendarItem(key, date, tasks, color) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   var lis = [];
-  lis = showTask(lis, tasks.lesson, MdVideoLibrary, "task.lesson");
-  lis = showTask(lis, tasks.task, MdCreate, "task.task");
-  lis = showTask(lis, tasks.meet, MdOutlineFavorite, "task.meet");
-  lis = showTask(lis, tasks.work, MdOutlineWorkOutline, "task.work");
-  lis = showTask(lis, tasks.etc, MdTaskAlt, "task.etc");
+  lis = showTask(0, lis, tasks.lesson, MdVideoLibrary, "task.lesson");
+  lis = showTask(1, lis, tasks.task, MdCreate, "task.task");
+  lis = showTask(2, lis, tasks.meet, MdOutlineFavorite, "task.meet");
+  lis = showTask(3, lis, tasks.work, MdOutlineWorkOutline, "task.work");
+  lis = showTask(4, lis, tasks.etc, MdTaskAlt, "task.etc");
+
   return (
-    <GridItem
-      h="100px"
-      borderWidth={"1px"}
-      key={key}
-      color={color}
-      px="10px"
-      paddingTop="5px"
-    >
-      {date}
-      <Grid
-        height="fit-content"
-        templateColumns="repeat(3, 1fr)"
-        templateRows="repeat(2, 1fr)"
+    <>
+      <GridItem
+        h="100px"
+        borderWidth={"1px"}
+        borderColor="gray.100"
+        key={key}
+        color="black"
+        background={color}
+        px="10px"
+        paddingTop="5px"
+        onClick={onOpen}
       >
-        {lis}
-      </Grid>
-    </GridItem>
+        {date}
+        <Grid
+          height="fit-content"
+          templateColumns="repeat(3, 1fr)"
+          templateRows="repeat(2, 1fr)"
+        >
+          {lis}
+        </Grid>
+
+        {ShowModal(isOpen, onClose, date)}
+      </GridItem>
+    </>
   );
 }
 
-function showMonth(year, month) {
+function showMonth() {
   var lis = [];
+  var date = new Date(2023, 1, 12);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  var color;
+
   for (let i = 0; i < 15 * 7; i++) {
+    date.setDate(date.getDate() + 1);
+
+    if (date < today) color = "gray.100";
+    else if (date >= today) color = "white";
+
     lis.push(
-      calendarItem(
-        (month - 1).toString() + i.toString(),
+      CalendarItem(
         i,
+        date.getDate(),
         {
           lesson: 5,
           task: 4,
@@ -76,7 +100,7 @@ function showMonth(year, month) {
           work: 2,
           etc: 1,
         },
-        "black"
+        color
       )
     );
   }
@@ -85,8 +109,7 @@ function showMonth(year, month) {
 }
 
 export default function MonthlyView() {
-  const [date, setDate] = useState(new Date());
-  var lis = showMonth(date.getFullYear(), date.getDate()); // Jan: 0
+  var lis = showMonth(); // Jan: 0
 
   return (
     <Card height="100%" mx="4vw" shadow="2xl" overflow="hidden">
